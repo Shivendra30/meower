@@ -1,0 +1,33 @@
+#singleMew {
+	list-style: none;
+	text-align: center;
+}
+
+.listItem {
+	width: 50%;
+	margin: 0 auto;	
+	margin-top: 10px;
+	border-bottom-style: ridge;
+}
+
+.mewDiv{
+	margin:10px;
+	text-align: center;
+}
+
+.username {
+
+}
+
+.days {
+	vertical-align: super;
+	text-align: left;
+	margin-left: 5px;
+
+}
+
+.mewInfo {
+	display: inline-flex;
+
+
+}
