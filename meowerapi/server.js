@@ -91,9 +91,7 @@ app.post('/register', (req, res) => {
 app.post('/signin', (req, res) => {
 	const {email, password} = req.body;
 
-	db('login').where({
-		email: email,
-	}).returning('*')
+	db.select('email', 'hash').from('login').where('email', '=', email).returning('*')
 	.then(user => {
 		// res.status(200).json(user[0]);
 		const isValid = bcrypt.compareSync(password, user[0].hash);
@@ -101,7 +99,7 @@ app.post('/signin', (req, res) => {
 		if(isValid){
 			res.status(200).json(user[0]);
 		}else{
-			res.status(400).json('Wrong credential');
+			res.status(400).json('Wrong Credential');
 		}
 
 	})

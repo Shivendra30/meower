@@ -8,7 +8,8 @@ class Mews extends Component {
 		super(props);
 		//console.log(props)
 		this.state = {
-			mews: []
+			mews: [],
+			mewsUpdated: this.props.mewsUpdated
 		}
 	}
 
@@ -26,7 +27,11 @@ class Mews extends Component {
       //console.log('Mews Fetched', this.state);
     })
     .catch(err => console.log('MEWS ERROR', err));
+
+    console.log(this.props.mewsUpdated);
+
   }
+
 
 	render(){
 		const {mews} = this.state;
@@ -49,6 +54,7 @@ class Mews extends Component {
 				</div>	
 				);
 		})
+
 		return(
 			<div className="mewDiv">
 			<h1 className="mt4 tc"> Mews </h1>

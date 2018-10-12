@@ -28,6 +28,7 @@ class Input extends Component {
 
   	postMews = () => {
     console.log('postMews',this.state);
+
     fetch('http://localhost:3000/post', {
 		method: 'post', 
 		headers: {'Content-Type': 'application/json'},
@@ -39,6 +40,9 @@ class Input extends Component {
     .then(response => response.json())
     .then(mew => console.log(mew))
     .catch(err => console.log('Post Error', err));
+
+    this.props.onMewsUpdated();
+
   }
 
 	render(){
