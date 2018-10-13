@@ -3,6 +3,13 @@ import Input from './components/Input/Input';
 import Mews from './components/Mews/Mews';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from 'react-router-dom';
 
 
 // import './App.css';
@@ -38,24 +45,30 @@ class App extends Component {
 
       case 'home':
         return (
-          <div className="App">
-            <Input onMewsUpdated={this.onMewsUpdated.bind(this)}/>
-            <Mews mewsUpdated = {this.state.mewsUpdate}/>
-          </div>
+          <Router>
+            <div className="App">
+              <Input onMewsUpdated={this.onMewsUpdated.bind(this)}/>
+              <Mews mewsUpdated = {this.state.mewsUpdate}/>
+            </div>
+          </Router>  
         );
 
       case 'signin': 
         return (
-          <div className="App">
-            <Signin onRouteChange={this.onRouteChange.bind(this)}/>
-          </div>
+          <Router>
+            <div className="App">
+              <Signin onRouteChange={this.onRouteChange.bind(this)}/>
+            </div>
+          </Router>  
         );
 
       case 'register' :
         return (
-          <div className="App">
-            <Register onRouteChange={this.onRouteChange.bind(this)}/>
-          </div>
+          <Router>
+            <div className="App">
+              <Register onRouteChange={this.onRouteChange.bind(this)}/>
+            </div>
+          </Router>  
         );
 
       default:
