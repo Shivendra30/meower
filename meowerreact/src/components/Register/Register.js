@@ -36,6 +36,13 @@ class Register extends Component {
 	}
 
 	registerUser = () => {
+
+		if(!this.state.name || !this.state.email || !this.state.password){
+
+			alert('Please filll in all details to register');
+
+		}
+
 		fetch('http://localhost:3000/register', {
 			method: 'post',
 			headers : {'Content-Type': 'application/json'},
@@ -59,6 +66,8 @@ class Register extends Component {
 	render(){
 		return(
 			<div className="registerForm"> 
+
+			  <h1> Register </h1>
 				
 			  <div className="form-group">
 			    <label htmlFor="exampleInputName">Name</label>

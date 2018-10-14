@@ -1,6 +1,27 @@
 .signinForm {
-	margin-left: 20px;
+	width: 50%;
+	padding-top: 7em;
+	margin: 0 auto;
+	font-family: 'Roboto', sans-serif;
 }
+h1 {
+
+	text-align: center;
+	margin-bottom: 40px;
+
+}
+
+.form-control {
+	background: transparent;
+	border: 1px solid black;
+}
+
+
+
+label, p {
+	font-weight: bold;
+}
+
 
 .createAccount {
 

@@ -56,11 +56,11 @@ class Input extends Component {
 				    id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter username"/>
 				  </div>
 				  <div className="form-group">
-				  `	<label htmlFor="exampleInputPassword1">Enter your Mew </label>
+				  `	<label htmlFor="inputMew">Enter your Mew </label>
 				    <input type="text" 
 				    onChange={this.setMewState}
 				    className="form-control" 
-				    id="exampleInputPassword1"/>
+				    id="inputMew"/>
 				  </div>
 				  <div className='form-group'>
 				  	<button onClick={this.postMews} 

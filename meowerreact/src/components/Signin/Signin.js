@@ -51,6 +51,7 @@ class Signin extends Component {
 	render(){
 		return(
 			<div className="signinForm">
+			  <h1> SIGNIN </h1>
 			  <div className="form-group">
 			    <label htmlFor="exampleInputEmail1">Email address</label>
 			    <input onChange={this.onEmailChange} 

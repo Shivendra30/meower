@@ -89,6 +89,12 @@ app.post('/register', (req, res) => {
 	// name, email, password
 	const {name, email, password} = req.body;
 
+	if(!name || !email || !password){
+
+		return res.status(400);
+
+	}
+
 	const hash = bcrypt.hashSync(password);
 
 	db.transaction(trx => {
