@@ -4,17 +4,23 @@ import Mews from './components/Mews/Mews';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
 import {
-  BrowserRouter as Router,
+  BrowserRouter,
   Route,
   Link,
   Switch,
   Redirect
 } from 'react-router-dom';
 
-
-// import './App.css';
+/*
+Things to achieve:
+- Set the isAuthenticated state according to the user session from the backend
+- Put a signout option on the top and set isAUthenticated to false
+- Disable forward-arrow url navigation in chrome so that the user cannot see protected content without logging in
+- Set isAuthenticated to false when the user clicks the back button (essentially signpout the user)
+*/
 
 class App extends Component {
+
 
   constructor(props){
     super(props);
@@ -22,7 +28,8 @@ class App extends Component {
       username: '',
       userMew: '',
       route: 'signin',
-      mewsUpdate: false
+      mewsUpdate: false,
+      isAuthenticated: false
     }
   }
 
@@ -39,43 +46,34 @@ class App extends Component {
     });
   }
 
+  authenticate = (isValid) => {
+    this.setState({
+      isAuthenticated: isValid
+    });
+    console.log('authenticate', isValid);
+  }
+
+
   render() {
 
-    switch(this.state.route){
+    return(
 
-      case 'home':
-        return (
-          <Router>
-            <div className="App">
-              <Input onMewsUpdated={this.onMewsUpdated.bind(this)}/>
-              <Mews mewsUpdated = {this.state.mewsUpdate}/>
-            </div>
-          </Router>  
-        );
+    <BrowserRouter>
+      
+      <div>
+        <Route path="/" render={(props) => <Signin {...props} isAuthenticated = {this.authenticate} />} exact={true} />
+        <Route path="/register" render={(props) => <Register {...props} isAuthenticated = {this.authenticate} />}  />
+        {this.state.isAuthenticated && <Route path="/meower" component={Input} />}
+        {this.state.isAuthenticated && <Route path="/meower" component={Mews} />}
+      </div>  
 
-      case 'signin': 
-        return (
-          <Router>
-            <div className="App">
-              <Signin onRouteChange={this.onRouteChange.bind(this)}/>
-            </div>
-          </Router>  
-        );
+    </BrowserRouter>
 
-      case 'register' :
-        return (
-          <Router>
-            <div className="App">
-              <Register onRouteChange={this.onRouteChange.bind(this)}/>
-            </div>
-          </Router>  
-        );
-
-      default:
-        return;
-    }
+    );
    
   }
+
+
 }
 
 export default App;

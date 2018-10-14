@@ -22,18 +22,18 @@ const db = require('knex')({
 //set PORT=3001 && react-scripts start
 
 
-app.use(session({
-    key: 'user_sid',
-    secret: 'somerandonstuffs',
-}));
+// app.use(session({
+//     key: 'user_sid',
+//     secret: 'somerandonstuffs',
+// }));
 
-//Middleware to clear the cookie if the user session does not exist
-app.use((req, res, next) => {
-	if(req.cookie.user_id && !req.session.user){
-		clearCookie('user_id');
-	}
-	next();
-});
+// //Middleware to clear the cookie if the user session does not exist
+// app.use((req, res, next) => {
+// 	if(req.cookie.user_id && !req.session.user){
+// 		clearCookie('user_id');
+// 	}
+// 	next();
+// });
 
 // //Middleware to see if a session exists and accordingly redirect the user
 // app.use((req, res, next) => {
@@ -103,7 +103,7 @@ app.post('/register', (req, res) => {
 				email: loginEmail[0]
 			}).returning('*')
 			.then(user => {
-				req.session.user = user;
+				//req.session.user = user;
 				res.status(200).json(user[0]);
 			}).catch(err => {
 				console.log('Users table not updated', err);
@@ -127,7 +127,7 @@ app.post('/signin', (req, res) => {
 		const isValid = bcrypt.compareSync(password, user[0].hash);
 		console.log(isValid);
 		if(isValid){
-			req.session.user = user;
+			//req.session.user = user;
 			res.status(200).json(user[0]);
 		}else{
 			res.status(400).json('Wrong Credential');

@@ -31,6 +31,9 @@ class Register extends Component {
 		});
 	}
 
+	redirectUrl = (path) => {
+		this.props.history.push(path);
+	}
 
 	registerUser = () => {
 		fetch('http://localhost:3000/register', {
@@ -45,7 +48,8 @@ class Register extends Component {
 		.then(user => {
 			console.log(user);
 			if(user) {
-				this.props.onRouteChange('home');
+				this.props.isAuthenticated(true);
+				this.redirectUrl('/meower');
 			}
 		})
 	}
@@ -72,7 +76,7 @@ class Register extends Component {
 			    <input onChange={this.onPasswordChange}
 			    type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
 			  </div>
-			  <p className="signin" onClick={() => this.props.onRouteChange('signin')}> I already have an account </p>
+			  <p className="signin" onClick={() => this.redirectUrl('/')}> I already have an account </p>
 			  <button
 			  onClick={this.registerUser}
 			  type="submit" 

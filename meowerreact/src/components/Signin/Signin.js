@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import './Signin.css';
+import {Redirect} from 'react-router-dom';
 
 class Signin extends Component {
 
@@ -23,6 +24,10 @@ class Signin extends Component {
 		});
 	}
 
+	redirectUrl = (path) => {
+		this.props.history.push(path);
+	}
+
 	signinUser =() => {
 		fetch('http://localhost:3000/signin', {
 			method: 'post',
@@ -36,7 +41,8 @@ class Signin extends Component {
 			console.log(user);
 			if(user){
 				console.log('Checking credentials',user);
-				this.props.onRouteChange('home');
+				this.props.isAuthenticated(true);
+				this.redirectUrl('/meower');
 			}
 		})
 	}
@@ -56,11 +62,13 @@ class Signin extends Component {
 			    <input onChange={this.onPasswordChange}
 			    type="password" className="form-control" id="exampleInputPassword1" placeholder="Password"/>
 			  </div>
-			  <p className="createAccount" onClick={() => this.props.onRouteChange('register')}> Create an account </p>
+			  <p className="createAccount" onClick={() => { this.redirectUrl('/register')}}> Create an account </p>
+			  
 			  <button 
 			  onClick={this.signinUser}
 			  type="submit" 
 			  className="btn btn-primary">Sign In</button>
+		    
 			</div>
 
 		);
