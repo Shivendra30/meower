@@ -15,8 +15,13 @@
 	text-align: center;
 }
 
-.username {
+.delete {
+	text-align: right;
+}
 
+#deleteButton {
+	border-radius: 10px;
+	margin: 10px;
 }
 
 .days {

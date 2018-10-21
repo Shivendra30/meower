@@ -33,7 +33,8 @@ class Mews extends Component {
 
 	componentDidMount(){
     //Fetching Mews
-    this.fetchMews();   
+    this.fetchMews();
+    //console.log('THis user is from Mews.js',this.props.user)   
 
     // console.log(this.props.mewsUpdated);
 
@@ -68,9 +69,7 @@ class Mews extends Component {
     })
     .catch(err => console.log('Post Error', err));
 
-    
-
-
+ 
   }
 
 
@@ -84,7 +83,7 @@ class Mews extends Component {
 			const mewDate = new Date(mew.date);
 			const timePassed = Math.round((currentDate - mewDate) / (1000*60*60*24));
 			const daysAgo = `${timePassed} days`;
-
+			
 			return(
 				<div id="singleMew" key= {mew.id}>
 					<li className="listItem">
@@ -93,7 +92,12 @@ class Mews extends Component {
 							<p className='days'> {daysAgo} </p>
 						</div>
 						<p className='mew'> {mew.mew} </p>
-						<button id="deleteButton" onClick={() => this.deleteMew(mew.id)}> Delete </button>
+						{this.props.user.name === mew.username &&
+							<div className="delete">
+								<button className="btn-danger" id="deleteButton" onClick={() => this.deleteMew(mew.id)}> Delete </button>
+							</div>
+						}
+
 					</li>
 				</div>	
 				);
