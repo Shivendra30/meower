@@ -20,7 +20,7 @@ class Meower extends Component {
 			<div>
 			<p className='signout' onClick={() => this.signOut(false)}> <u> Sign Out </u> </p>
 			<Input user={this.props.user}/>
-			<Mews />
+			<Mews user={this.props.user}/>
 			</div>
 
 		);

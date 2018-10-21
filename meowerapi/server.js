@@ -181,14 +181,31 @@ app.post('/signin', (req, res) => {
 
 });
 
+app.delete('/delete', (req,res) => {
+	const {index} = req.body;
+	if(index){
+		db('mews')
+		.where('id', index)
+		.del().then(console.log);
+
+		res.status(200).json(`Mew with ${index} deleted`);
+	}else {
+		res.status(400).json("Wrong ID is sent");
+	}
+})
+
 io.on('connection', (socket)=> {
 	console.log(`made connection ${socket.id}`)
 	
 	socket.on('newMew', (data) => {
 		io.sockets.emit('newMew', data);
 	});
-	
-	
+
+	socket.on('deletedMew', (data) => {
+		io.sockets.emit('deletedMew', data);
+	});
+
+
 })
 
 

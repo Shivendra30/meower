@@ -42,7 +42,38 @@ class Mews extends Component {
     	this.fetchMews();
 	});
 
+	socket.on('deletedMew', (data) => {
+    	console.log("From Socket!", "Got a new mew");
+    	this.fetchMews();
+	});
+
   }
+
+  deleteMew = (index) => {
+
+	console.log(index);
+	fetch('http://localhost:3000/delete', {
+		method: 'delete', 
+		headers: {'Content-Type': 'application/json'},
+		body: JSON.stringify({
+			index: index
+		})
+	})
+    .then(response => response.json())
+    .then(data => {
+    	console.log('Deleted Mew', data);
+    	socket.emit('deletedMew', {
+    		index: index
+    	});
+    })
+    .catch(err => console.log('Post Error', err));
+
+    
+
+
+  }
+
+
 
 
 	render(){
@@ -57,11 +88,12 @@ class Mews extends Component {
 			return(
 				<div id="singleMew" key= {mew.id}>
 					<li className="listItem">
-					<div className="mewInfo">
-						<p className='username'> {mew.username} </p>
-						<p className='days'> {daysAgo} </p>
-					</div>
-					<p className='mew'> {mew.mew} </p>
+						<div className="mewInfo">
+							<p className='username'> {mew.username} </p>
+							<p className='days'> {daysAgo} </p>
+						</div>
+						<p className='mew'> {mew.mew} </p>
+						<button id="deleteButton" onClick={() => this.deleteMew(mew.id)}> Delete </button>
 					</li>
 				</div>	
 				);
