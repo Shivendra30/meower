@@ -6,6 +6,8 @@ const config = require('./config.json');
 const bcrypt = require('bcrypt-nodejs');
 const session = require('express-session');
 const cookieParser = require('cookie-parser')
+const socket = require('socket.io');
+
 
 app.use(bodyParser.json());
 app.use(cors());
@@ -19,17 +21,20 @@ const db = require('knex')({
     database : config.connection.database
   }
 });
-//set PORT=3001 && react-scripts start
+
+app.use(session({
+	key: 'user_id',
+    secret: 'somerandonstuffs',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+         expires: 60 * 1000
+      }
+}));
 
 
-// app.use(session({
-//     key: 'user_sid',
-//     secret: 'somerandonstuffs',
-// }));
-
-// //Middleware to clear the cookie if the user session does not exist
 // app.use((req, res, next) => {
-// 	if(req.cookie.user_id && !req.session.user){
+// 	if(!req.session.user){
 // 		clearCookie('user_id');
 // 	}
 // 	next();
@@ -48,6 +53,13 @@ const db = require('knex')({
 // 	}
 // });
 
+const server = app.listen(3000, () => {
+	console.log(`Listening on port 3000`);
+});
+
+const io = socket(server);
+
+
 app.get('/', (req, res) => {
 	db.select('*').from('users').returning('*')
 	.then(users => {
@@ -58,6 +70,24 @@ app.get('/', (req, res) => {
 		console.log(err);
 	})
 });
+
+//Make a new route called Meower which checks if a user exists or not
+// Go to the react app in Meower.js and make a function to fetch the mewoer route to update the 
+//isAuthenticated state accordingly
+
+//OR: In the '/' route, check if the session exists and then send an apt response
+//Fetch this route in App.js to set isAuthenticated and then route the url accordingly accordingly 
+
+app.get('/meower', (req,res)=>{
+	if(req.session.user){
+		console.log(req.session.user)
+		res.status(200).json(`valid user`);
+	} 
+	else{
+		console.log('user session not present')
+		res.status(400).json('invalid user');
+	}
+})
 
 app.get('/mews', (req, res) => {
 	//res.status(200).json('No tweets to fetch');
@@ -90,9 +120,7 @@ app.post('/register', (req, res) => {
 	const {name, email, password} = req.body;
 
 	if(!name || !email || !password){
-
 		return res.status(400);
-
 	}
 
 	const hash = bcrypt.hashSync(password);
@@ -109,7 +137,9 @@ app.post('/register', (req, res) => {
 				email: loginEmail[0]
 			}).returning('*')
 			.then(user => {
-				//req.session.user = user;
+				req.session.user = user;
+				console.log(req.session.user);
+				console.log('Session user register', req.session.user);
 				res.status(200).json(user[0]);
 			}).catch(err => {
 				console.log('Users table not updated', err);
@@ -133,8 +163,13 @@ app.post('/signin', (req, res) => {
 		const isValid = bcrypt.compareSync(password, user[0].hash);
 		console.log(isValid);
 		if(isValid){
-			//req.session.user = user;
-			res.status(200).json(user[0]);
+			req.session.user = user;
+			console.log('Session user signin', req.session.user);
+			db.select('*').from('users').where('email', '=', email).returning('*')
+			.then(userDetail => {
+				res.status(200).json(userDetail[0]);
+			})
+			
 		}else{
 			res.status(400).json('Wrong Credential');
 		}
@@ -146,7 +181,14 @@ app.post('/signin', (req, res) => {
 
 });
 
-app.listen(3000, () => {
-	console.log(`Listening on port 3000`);
-});
+io.on('connection', (socket)=> {
+	console.log(`made connection ${socket.id}`)
+	
+	socket.on('newMew', (data) => {
+		io.sockets.emit('newMew', data);
+	});
+	
+	
+})
+
 

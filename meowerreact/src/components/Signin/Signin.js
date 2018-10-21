@@ -41,6 +41,7 @@ class Signin extends Component {
 			console.log(user);
 			if(user){
 				console.log('Checking credentials',user);
+				this.props.setUser(user);				
 				this.props.isAuthenticated(true);
 				this.redirectUrl('/meower');
 			}

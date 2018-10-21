@@ -55,6 +55,7 @@ class Register extends Component {
 		.then(user => {
 			console.log(user);
 			if(user) {
+				this.props.setUser(user);
 				this.props.isAuthenticated(true);
 				this.redirectUrl('/meower');
 			}
